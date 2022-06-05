@@ -16,8 +16,9 @@ class MovieList extends React.Component {
   }
 
   async getMoives() {
+    const url = process.env.URL || 'http://movie.zzhpro.com/movie/recent'
     try {
-      const response = await axios.get('https://movieshelper.herokuapp.com/movie/recent')
+      const response = await axios.get(url)
       this.setState({
         moives: response.data
       })
