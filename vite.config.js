@@ -7,14 +7,14 @@ import vitePluginImp from 'vite-plugin-imp'
 export default defineConfig({
   plugins: [
     react(),
-    vitePluginImp({
-      libList: [
-        {
-          libName: "antd-mobile",
-          style: (name) => `antd-mobile/es/components/${name}/${name}.css`,
-        },
-      ],
-    })
+    // vitePluginImp({
+    //   libList: [
+    //     {
+    //       libName: "antd-mobile",
+    //       style: (name) => `antd-mobile/es/components/${name}/${name}.css`,
+    //     },
+    //   ],
+    // })
   ],
   css: {
     preprocessorOptions: {
