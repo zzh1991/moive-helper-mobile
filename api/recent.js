@@ -27,6 +27,14 @@ const getMovies = async() => {
         imageLarge: getImageUrl(element),
       });
     });
+
+    filmList.sort((a, b) => {
+      if (a.rating > b.rating) {
+        return -1;
+      }
+      return 1;
+    });
+
   } catch (error) {
     console.error(error);
   }
@@ -41,6 +49,7 @@ const getImageUrl = (element) => {
 
 export default async function handler(request, response) {
   const filmList = await getMovies();
+  response.setHeader('Access-Control-Allow-Origin', '*');
   return response.status(200).json({
     body: filmList,
   });

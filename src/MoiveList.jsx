@@ -23,38 +23,15 @@ class MovieList extends React.Component {
   }
 
   async getMoives() {
-    const url = 'https://movie.douban.com/cinema/nowplaying/hangzhou/';
+    const url = 'https://movie.zzhpro.com/api/recent';
     try { 
       const data = await axios.get(url, {
-        responseType: 'text',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          // 'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*'
         }
       });
-      const dom = parseDocument(data.data);
-      const nowplaying = selectOne('#nowplaying', dom);
-    
-      const list = selectAll('.list-item', nowplaying);
-      console.log(list);
-    
-      const filmList = []
-      list.forEach(element => {
-        const attr = element.attribs;
-        filmList.push({
-          moiveId: Number(attr.id),
-          title: attr['data-title'],
-          rating: parseFloat(attr['data-score']),
-          movieYear: Number(attr['data-release']),
-          country: attr['data-region'].split(' '),
-          directors: attr['data-director'].split(' '),
-          casts: attr['data-actors'].split('/'),
-          url: `https://movie.douban.com/subject/${attr.id}`,
-          imageLarge: getImageUrl(element),
-        });
-      });
       this.setState({
-        moives: filmList
+        moives: data.data || []
       })
     } catch (error) {
       console.error(error);
