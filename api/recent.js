@@ -5,37 +5,32 @@ const CSSselect = require("css-select");
 const url = 'https://movie.douban.com/cinema/nowplaying/hangzhou/';
 
 const getMovies = async() => {
+  const filmList = []
   try {
     const data = await axios.get(url, {
       responseType: 'text'
     });
-    console.log(data.data);
+    const dom = htmlparser2.parseDocument(data.data);
+    const nowplaying = CSSselect.selectOne('#nowplaying', dom);
+    const list = CSSselect.selectAll('.list-item', nowplaying);
+    list.forEach(element => {
+      const attr = element.attribs;
+      filmList.push({
+        moiveId: Number(attr.id),
+        title: attr['data-title'],
+        rating: parseFloat(attr['data-score']),
+        movieYear: Number(attr['data-release']),
+        country: attr['data-region'].split(' '),
+        directors: attr['data-director'].split(' '),
+        casts: attr['data-actors'].split('/'),
+        url: `https://movie.douban.com/subject/${attr.id}`,
+        imageLarge: getImageUrl(element),
+      });
+    });
   } catch (error) {
     console.error(error);
   }
-  
-  const dom = htmlparser2.parseDocument(data.data);
-  const nowplaying = CSSselect.selectOne('#nowplaying', dom);
-  const list = CSSselect.selectAll('.list-item', nowplaying);
-
-  const filmList = []
-  list.forEach(element => {
-    const attr = element.attribs;
-    filmList.push({
-      moiveId: Number(attr.id),
-      title: attr['data-title'],
-      rating: parseFloat(attr['data-score']),
-      movieYear: Number(attr['data-release']),
-      country: attr['data-region'].split(' '),
-      directors: attr['data-director'].split(' '),
-      casts: attr['data-actors'].split('/'),
-      url: `https://movie.douban.com/subject/${attr.id}`,
-      imageLarge: getImageUrl(element),
-    });
-  });
-
   return filmList;
-
 }
 
 const getImageUrl = (element) => {
