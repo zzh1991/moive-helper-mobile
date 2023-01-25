@@ -31,7 +31,7 @@ class MovieList extends React.Component {
         }
       });
       this.setState({
-        moives: data.data || []
+        moives: data.data.body || []
       })
     } catch (error) {
       console.error(error);
