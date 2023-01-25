@@ -1,21 +1,22 @@
-import axios from "axios"
-import { parseDocument } from 'htmlparser2';
-import { selectAll, selectOne} from 'css-select';
+const axios = require('axios');
+const htmlparser2 = require("htmlparser2");
+const CSSselect = require("css-select");
 
-getImageUrl = (element) => {
-  const imgs = selectAll('img', element);
-  return imgs[0].attribs.src;
-}
+const url = 'https://movie.douban.com/cinema/nowplaying/hangzhou/';
 
-export default async function handler(request, response) {
-  const url = 'https://movie.douban.com/cinema/nowplaying/hangzhou/';
-  const data = await axios.get(url, {
-    responseType: 'text',
-  });
-  const dom = parseDocument(data.data);
-  const nowplaying = selectOne('#nowplaying', dom);
-
-  const list = selectAll('.list-item', nowplaying);
+const getMovies = async() => {
+  try {
+    const data = await axios.get(url, {
+      responseType: 'text'
+    });
+    console.log(data.data);
+  } catch (error) {
+    console.error(error);
+  }
+  
+  const dom = htmlparser2.parseDocument(data.data);
+  const nowplaying = CSSselect.selectOne('#nowplaying', dom);
+  const list = CSSselect.selectAll('.list-item', nowplaying);
 
   const filmList = []
   list.forEach(element => {
@@ -33,6 +34,18 @@ export default async function handler(request, response) {
     });
   });
 
+  return filmList;
+
+}
+
+const getImageUrl = (element) => {
+  const imgs = CSSselect.selectAll('img', element);
+  return imgs[0].attribs.src;
+}
+
+
+export default async function handler(request, response) {
+  const filmList = await getMovies();
   return response.status(200).json({
     body: filmList,
   });
