@@ -22,4 +22,8 @@ const getMovieDetail = async(moiveId) => {
   return summary
 }
 
-getMovieDetail(35593344)
+// getMovieDetail(35593344)
+
+export default async function handler(request, response) {
+  response.status(200).end('');
+}
