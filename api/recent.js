@@ -2,6 +2,10 @@ const axios = require('axios');
 const htmlparser2 = require("htmlparser2");
 const CSSselect = require("css-select");
 
+const { PrismaClient } = require('@prisma/client')
+
+const prisma = new PrismaClient()
+
 const url = 'https://movie.douban.com/cinema/nowplaying/hangzhou/';
 
 const getMovies = async() => {
@@ -46,9 +50,22 @@ const getImageUrl = (element) => {
   return imgs[0].attribs.src;
 }
 
+const getRecentMovies = async() => {
+  const allFilms = await prisma.film_list.findMany({
+    where: {
+      movieType: 'RECENT',
+    },
+    orderBy: {
+      rating: 'desc',
+    },
+  });
+  await prisma.$disconnect();
+  // console.log(allFilms)
+  return allFilms;
+}
 
 export default async function handler(request, response) {
-  const filmList = await getMovies();
+  const filmList = await getRecentMovies();
   response.setHeader('Access-Control-Allow-Origin', '*');
   return response.status(200).json({
     body: filmList,

@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model film_list {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  casts      String[]
+  country    String[]
+  directors  String[]
+  imageLarge String
+  moiveId    Int @unique
+  movieYear  Int
+  /// Multiple data types found: Float: 69.6%, Int: 30.4% out of 46 sampled entries
+  rating     Float
+  summary    String?
+  title      String
+  url        String
+  movieType  String
+}
