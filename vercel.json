@@ -1,6 +1,6 @@
 {
   "crons": [{
     "path": "/api/syncRecentMovies",
-    "schedule": "0 40 15 * * ?"
+    "schedule": "0 45 15 * * ?"
   }]
 }
