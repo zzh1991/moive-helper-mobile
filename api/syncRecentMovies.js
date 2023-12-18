@@ -104,7 +104,7 @@ const syncRecentMoives = async() => {
   await prisma.$disconnect();
 }
 
-syncRecentMoives()
+// syncRecentMoives()
 
 export default async function handler(request, response) {
   if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
