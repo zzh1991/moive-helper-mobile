@@ -5,6 +5,21 @@ import { GridItem } from 'antd-mobile/es/components/grid/grid'
 import { parseDocument } from 'htmlparser2';
 import { selectAll, selectOne} from 'css-select';
 
+const getMoiveSummary = async(movieId) => {
+  const url = `https://movie.zzhpro.com/api/getMovieDetail?movieId=${moiveId}`;
+  try { 
+    const data = await axios.get(url, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+    const summary = data.data.summary;
+    return summary;
+  } catch (error) {
+    console.error(error);
+  }  
+}
+
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
@@ -22,21 +37,6 @@ class MovieList extends React.Component {
     return imgs[0].attribs.src;
   }
 
-  async getMoiveSummary(movieId) {
-    const url = `https://movie.zzhpro.com/api/getMovieDetail?movieId=${moiveId}`;
-    try { 
-      const data = await axios.get(url, {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-      const summary = data.data.summary;
-      return summary;
-    } catch (error) {
-      console.error(error);
-    }  
-  }
-
   async getMoives() {
     const url = 'https://movie.zzhpro.com/api/recent';
     try { 
@@ -49,7 +49,7 @@ class MovieList extends React.Component {
       for (const film of filmList) {
         let summary = film.summary;
         if (summary === undefined || summary === null || summary === 'null' || summary === '') {
-          summary = await this.getMoiveSummary(film.moiveId);
+          summary = await getMoiveSummary(film.moiveId);
           film.summary = summary;
         }
       }
