@@ -49,7 +49,7 @@ class MovieList extends React.Component {
       for (const film of filmList) {
         let summary = film.summary;
         if (summary === undefined || summary === null || summary === 'null' || summary === '') {
-          summary = await getMoiveSummary(film.moiveId);
+          summary = await this.getMoiveSummary(film.moiveId);
           film.summary = summary;
         }
       }
