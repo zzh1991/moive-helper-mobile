@@ -41,7 +41,7 @@ const getMovieDetail = async(moiveId) => {
 // getMovieDetail(35694766)
 
 export default async function handler(request, response) {
-  const summary = await getMovieDetail(request.query.moiveId);
+  const summary = await getMovieDetail(request.query.movieId);
   response.setHeader('Access-Control-Allow-Origin', '*');
   return response.status(200).json({
     summary: summary,
