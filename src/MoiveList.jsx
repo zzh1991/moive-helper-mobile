@@ -6,7 +6,7 @@ import { parseDocument } from 'htmlparser2';
 import { selectAll, selectOne} from 'css-select';
 
 const getMoiveSummary = async(movieId) => {
-  const url = `https://movie.zzhpro.com/api/getMovieDetail?movieId=${moiveId}`;
+  const url = `https://movie.zzhpro.com/api/getMovieDetail?movieId=${movieId}`;
   try { 
     const data = await axios.get(url, {
       headers: {
