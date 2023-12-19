@@ -1,6 +1,9 @@
 const axios = require('axios');
 const htmlparser2 = require("htmlparser2");
 const CSSselect = require("css-select");
+const { PrismaClient } = require('@prisma/client')
+
+const prisma = new PrismaClient()
 
 const getMovieDetail = async(moiveId) => {
   const data = await axios.get(`https://movie.douban.com/subject/${moiveId}`, {
@@ -18,12 +21,29 @@ const getMovieDetail = async(moiveId) => {
     }
     summary = summary.concat(item.data.replace(/^\s\s*/, '').replace(/\s\s*$/, ''));
   }
-  console.log(summary)
-  return summary
+  if (summary === '') {
+    return
+  }
+  // console.log(summary)
+  const updateMovieSummary = await prisma.film_list.update({
+    where: {
+      moiveId: moiveId,
+    },
+    data: {
+      summary: summary,
+      movieType: 'RECENT',
+    },
+  })
+  await prisma.$disconnect();
+  return summary;
 }
 
-// getMovieDetail(35593344)
+// getMovieDetail(35694766)
 
 export default async function handler(request, response) {
-  response.status(200).end('');
+  const summary = await getMovieDetail(request.query.moiveId);
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  return response.status(200).json({
+    summary: summary,
+  });
 }

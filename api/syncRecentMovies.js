@@ -18,7 +18,7 @@ const getMovies = async() => {
 
     for (const element of list) {
       const attr = element.attribs;
-      const summary = await getMovieDetail(Number(attr.id));
+      // const summary = await getMovieDetail(Number(attr.id));
       filmList.push({
         moiveId: Number(attr.id),
         title: attr['data-title'],
@@ -29,7 +29,7 @@ const getMovies = async() => {
         casts: attr['data-actors'].split('/'),
         url: `https://movie.douban.com/subject/${attr.id}`,
         imageLarge: getImageUrl(element),
-        summary: summary,
+        // summary: summary,
         movieType: 'RECENT',
       });
     }
@@ -93,7 +93,7 @@ const syncRecentMoives = async() => {
         moiveId: film.moiveId,
       },
       update: {
-        summary: film.summary,
+        // summary: film.summary,
         rating: film.rating,
         movieType: 'RECENT',
       },
