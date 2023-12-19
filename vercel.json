@@ -1,6 +1,10 @@
 {
+  "functions": {
+    "api/syncRecentMovies.js": {
+      "maxDuration": 120
+    },
   "crons": [{
     "path": "/api/syncRecentMovies",
-    "schedule": "15 0 * * *"
+    "schedule": "30 22 * * *"
   }]
 }
