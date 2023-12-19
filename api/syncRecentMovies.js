@@ -107,9 +107,9 @@ const syncRecentMoives = async() => {
 // syncRecentMoives()
 
 export default async function handler(request, response) {
-  if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
-    return response.status(401).end('Unauthorized');
-  }
+  // if (request.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
+  //   return response.status(401).end('Unauthorized');
+  // }
   await syncRecentMoives();
   response.status(200).end('Sync recent movies!');
 
