@@ -27,7 +27,7 @@ const getMovieDetail = async(movieId) => {
   // console.log(summary)
   const updateMovieSummary = await prisma.film_list.update({
     where: {
-      movieId: movieId,
+      moiveId: Number(movieId),
     },
     data: {
       summary: summary,
