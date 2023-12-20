@@ -5,8 +5,8 @@ const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-const getMovieDetail = async(moiveId) => {
-  const data = await axios.get(`https://movie.douban.com/subject/${moiveId}`, {
+const getMovieDetail = async(movieId) => {
+  const data = await axios.get(`https://movie.douban.com/subject/${movieId}`, {
     responseType: 'text'
   });
   const dom = htmlparser2.parseDocument(data.data);
@@ -27,7 +27,7 @@ const getMovieDetail = async(moiveId) => {
   // console.log(summary)
   const updateMovieSummary = await prisma.film_list.update({
     where: {
-      moiveId: moiveId,
+      movieId: movieId,
     },
     data: {
       summary: summary,
@@ -35,6 +35,7 @@ const getMovieDetail = async(moiveId) => {
     },
   })
   await prisma.$disconnect();
+  // console.log(summary)
   return summary;
 }
 
