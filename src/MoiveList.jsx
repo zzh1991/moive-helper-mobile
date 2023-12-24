@@ -46,13 +46,13 @@ class MovieList extends React.Component {
         }
       });
       const filmList = data.data.body;
-      for (const film of filmList) {
-        let summary = film.summary;
-        if (summary === undefined || summary === null || summary === 'null' || summary === '') {
-          summary = await getMoiveSummary(film.moiveId);
-          film.summary = summary;
-        }
-      }
+      // for (const film of filmList) {
+      //   let summary = film.summary;
+      //   if (summary === undefined || summary === null || summary === 'null' || summary === '') {
+      //     summary = await getMoiveSummary(film.moiveId);
+      //     film.summary = summary;
+      //   }
+      // }
       this.setState({
         moives: filmList || []
       })

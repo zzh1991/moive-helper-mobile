@@ -1,6 +1,0 @@
-{
-  "crons": [{
-    "path": "/api/syncRecentMovies",
-    "schedule": "30 22 * * *"
-  }]
-}
