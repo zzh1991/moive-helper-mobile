@@ -55,9 +55,11 @@ const getRecentMovies = async() => {
     where: {
       movieType: 'RECENT',
     },
-    orderBy: {
+    orderBy: [{
+      movieYear: 'desc',
+    }, {
       rating: 'desc',
-    },
+    }]
   });
   await prisma.$disconnect();
   // console.log(allFilms)
