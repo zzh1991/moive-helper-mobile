@@ -12,6 +12,7 @@
     "antd-mobile": "^5.34.0",
     "antd-mobile-icons": "^0.2.2",
     "axios": "^0.27.2",
+    "color-convert": "^2.0.1",
     "css-select": "^5.1.0",
     "htmlparser2": "^8.0.1",
     "prisma": "^5.7.0",
