@@ -72,10 +72,11 @@ class MovieList extends React.Component {
               style={{
                 alignItems: 'center'
               }}
+              key={movie.id}
             >
               <Grid.Item span={2}>
                 <Collapse accordion>
-                  <Collapse.Panel key='1' title={<a href={movie.url} target="_blank" rel="noreferrer">{movie.title}</a>}>
+                  <Collapse.Panel key={movie.id} title={<a href={movie.url} target="_blank" rel="noreferrer">{movie.title}</a>}>
                     {movie.summary}
                   </Collapse.Panel>
                 </Collapse>
@@ -87,10 +88,12 @@ class MovieList extends React.Component {
                   justifyContent: 'center',
                   fontSize: '17px'
                 }}>
-                  <Rate readOnly value={movie.rating / 2} />
+                  <Rate readOnly allowHalf
+                    value={movie.rating / 2} 
+                  />
                   <Ellipsis
                     direction='end'
-                    content={movie.rating}
+                    content={movie.rating.toString()}
                   />
                 </div>
               </Grid.Item>
