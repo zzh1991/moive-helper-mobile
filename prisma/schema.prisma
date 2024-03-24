@@ -21,4 +21,6 @@ model film_list {
   title      String
   url        String
   movieType  String
+  gmtCreated DateTime   @default(now())
+  gmtModified DateTime   @default(now())
 }
