@@ -101,7 +101,7 @@ class MovieList extends React.Component {
                 <Image
                   lazy
                   src={movie.imageLarge}
-                  referrerpolicy="no-referrer"
+                  referrerpolicy="https://www.douban.com"
                 />
               </Grid.Item>
             </Grid>
