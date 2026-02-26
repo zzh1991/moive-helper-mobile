@@ -23,6 +23,6 @@ model film_list {
   movieType  String
   gmtCreated DateTime   @default(now())
   gmtModified DateTime   @default(now())
-  mimeType  String   // 存储图片类型，如 image/webp
-  data      Bytes    // 核心：存储二进制数据
+  mimeType  String?   // 存储图片类型，如 image/webp
+  data      Bytes?    // 核心：存储二进制数据
 }
