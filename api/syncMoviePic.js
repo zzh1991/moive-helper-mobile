@@ -25,7 +25,7 @@ const getPic = async(url) => {
 const getRecentMoviePic = async(moiveId) => {
     const movie = await prisma.film_list.findFirst({
       where: {
-        moiveId: moiveId,
+        moiveId: Number(moiveId),
       }
     });
     console.log(movie);

@@ -100,7 +100,7 @@ class MovieList extends React.Component {
               <Grid.Item span={2}>
                 <Image
                   lazy
-                  src={movie.imageLarge}
+                  src={`https://movie.zzhpro.com/api/getMoviePic?moiveId=${movie.moiveId}`}
                 />
               </Grid.Item>
             </Grid>
