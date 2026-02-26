@@ -33,7 +33,7 @@ const getRecentMoviePic = async(moiveId) => {
       const pic = await getPic(movie.imageLarge);
       await prisma.film_list.update({
         where: {
-          moiveId: moiveId,
+          moiveId: Number(moiveId),
         },
         data: {
           mimeType: pic.mimeType,
