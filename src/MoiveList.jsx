@@ -1,26 +1,29 @@
 import React from 'react';
 import axios from "axios"
-import { Rate, Grid, Ellipsis, Image, Collapse } from 'antd-mobile'
+import { Rate, Grid, Ellipsis, Image, Collapse, SearchBar, Button } from 'antd-mobile'
 import { GridItem } from 'antd-mobile/es/components/grid/grid'
 import { parseDocument } from 'htmlparser2';
 import { selectAll, selectOne} from 'css-select';
 
 const getMoiveSummary = async(movieId) => {
   const url = `/api/getMovieDetail?movieId=${movieId}`;
-  try { 
+  try {
     const data = await axios.get(url);
     const summary = data.data.summary;
     return summary;
   } catch (error) {
     console.error(error);
-  }  
+  }
 }
 
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      moives: []
+      moives: [],
+      filteredMovies: [],
+      searchValue: '',
+      sortByRating: false  // 默认不按评分排序
     };
   }
 
@@ -35,28 +38,124 @@ class MovieList extends React.Component {
 
   async getMoives() {
     const url = '/api/recent';
-    try { 
+    try {
       const data = await axios.get(url);
       const filmList = data.data.body;
-      // for (const film of filmList) {
-      //   let summary = film.summary;
-      //   if (summary === undefined || summary === null || summary === 'null' || summary === '') {
-      //     summary = await getMoiveSummary(film.moiveId);
-      //     film.summary = summary;
-      //   }
-      // }
       this.setState({
-        moives: filmList || []
+        moives: filmList,
+        filteredMovies: filmList
       })
     } catch (error) {
       console.error(error);
     }
   }
 
+  // 切换排序
+  toggleSort = () => {
+    const { filteredMovies, sortByRating } = this.state;
+    const newSortState = !sortByRating;
+
+    if (newSortState) {
+      // 按评分倒序
+      const sorted = [...filteredMovies].sort((a, b) => b.rating - a.rating);
+      this.setState({ filteredMovies: sorted, sortByRating: newSortState });
+    } else {
+      // 恢复原始顺序（按 ID 或加载顺序）
+      const { moives, searchValue } = this.state;
+      if (!searchValue) {
+        this.setState({ filteredMovies: moives, sortByRating: newSortState });
+      } else {
+        // 如果有搜索关键词，需要重新过滤
+        const filtered = this.filterMovies(moives, searchValue);
+        this.setState({ filteredMovies: filtered, sortByRating: newSortState });
+      }
+    }
+  }
+
+  // 过滤电影（提取为独立方法）
+  filterMovies(movies, searchValue) {
+    const keyword = searchValue.toLowerCase().trim();
+    if (!keyword) return movies;
+
+    return movies.filter(movie => {
+      const titleMatch = movie.title && movie.title.toLowerCase().includes(keyword);
+      const directorMatch = movie.directors && (
+        Array.isArray(movie.directors)
+          ? movie.directors.some(d => d.toLowerCase().includes(keyword))
+          : movie.directors.toLowerCase().includes(keyword)
+      );
+      const castMatch = movie.casts && (
+        Array.isArray(movie.casts)
+          ? movie.casts.some(c => c.toLowerCase().includes(keyword))
+          : movie.casts.toLowerCase().includes(keyword)
+      );
+      return titleMatch || directorMatch || castMatch;
+    });
+  }
+
+  // 搜索处理
+  handleSearch = (value) => {
+    const { moives, sortByRating } = this.state;
+
+    const filtered = this.filterMovies(moives, value);
+
+    // 如果开启了评分排序，对搜索结果也进行排序
+    const finalResult = sortByRating
+      ? [...filtered].sort((a, b) => b.rating - a.rating)
+      : filtered;
+
+    this.setState({ filteredMovies: finalResult, searchValue: value });
+  }
+
+  // 清空搜索
+  handleClear = () => {
+    const { moives, sortByRating } = this.state;
+    const finalResult = sortByRating
+      ? [...moives].sort((a, b) => b.rating - a.rating)
+      : moives;
+
+    this.setState({
+      filteredMovies: finalResult,
+      searchValue: ''
+    });
+  }
+
   render() {
+    const { filteredMovies, searchValue, sortByRating } = this.state;
+
     return (
       <div style={{ padding: '16px' }}>
-        {this.state.moives.map((movie) => {
+        {/* 搜索栏 */}
+        <div style={{ marginBottom: '16px' }}>
+          <SearchBar
+            placeholder='搜索电影、导演或演员'
+            value={searchValue}
+            onChange={this.handleSearch}
+            onClear={this.handleClear}
+          />
+        </div>
+
+        {/* 操作栏：统计 + 排序按钮 */}
+        <div style={{
+          marginBottom: '12px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <span style={{ color: '#666', fontSize: '14px' }}>
+            共 {filteredMovies.length} 部电影
+          </span>
+          <Button
+            size='small'
+            color={sortByRating ? 'primary' : 'default'}
+            fill={sortByRating ? 'solid' : 'outline'}
+            onClick={this.toggleSort}
+          >
+            {sortByRating ? '已按评分排序' : '按评分排序'}
+          </Button>
+        </div>
+
+        {filteredMovies.map((movie) => {
           return (
             <Grid
               columns={2}
@@ -92,7 +191,7 @@ class MovieList extends React.Component {
                   fontSize: '17px'
                 }}>
                   <Rate readOnly allowHalf
-                    value={movie.rating / 2} 
+                    value={movie.rating / 2}
                   />
                   <Ellipsis
                     direction='end'
