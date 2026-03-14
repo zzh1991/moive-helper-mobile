@@ -59,10 +59,25 @@ const getRecentMovies = async() => {
       movieYear: 'desc',
     }, {
       rating: 'desc',
-    }]
+    }],
+    select: {
+      id: true,
+      moiveId: true,
+      title: true,
+      rating: true,
+      movieYear: true,
+      country: true,
+      directors: true,
+      casts: true,
+      url: true,
+      imageLarge: true,
+      summary: true,
+      movieType: true,
+      createTime: true,
+      updateTime: true,
+    }
   });
   await prisma.$disconnect();
-  // console.log(allFilms)
   return allFilms;
 }
 
