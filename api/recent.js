@@ -73,8 +73,8 @@ const getRecentMovies = async() => {
       imageLarge: true,
       summary: true,
       movieType: true,
-      createTime: true,
-      updateTime: true,
+      gmtCreated: true,
+      gmtModified: true,
     }
   });
   await prisma.$disconnect();
