@@ -159,16 +159,91 @@ class MovieList extends React.Component {
           return (
             <Grid
               columns={2}
-              gap={8}
+              gap={6}
               style={{
                 alignItems: 'center',
-                marginBottom: '24px'
+                marginBottom: '12px'
               }}
               key={movie.id}
             >
               <Grid.Item span={2}>
                 <Collapse accordion>
-                  <Collapse.Panel key={movie.id} title={<a href={movie.url} target="_blank" rel="noreferrer">{movie.title}</a>}>
+                  <Collapse.Panel
+                    key={movie.id}
+                    title={
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
+                        borderRadius: '8px',
+                        padding: '12px 16px',
+                        border: '1px solid #e8e8e8',
+                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)'
+                      }}>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          flex: 1,
+                          overflow: 'hidden',
+                          marginRight: '12px'
+                        }}>
+                          {/* 左侧装饰竖条 */}
+                          <span style={{
+                            width: '3px',
+                            height: '20px',
+                            background: 'linear-gradient(180deg, #1677ff 0%, #69c0ff 100%)',
+                            borderRadius: '2px',
+                            marginRight: '10px',
+                            flexShrink: 0
+                          }} />
+                          <a
+                            href={movie.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              color: '#1a1a2e',
+                              fontWeight: 600,
+                              fontSize: '16px',
+                              flex: 1,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              textDecoration: 'none',
+                              letterSpacing: '0.3px'
+                            }}
+                          >
+                            {movie.title}
+                          </a>
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          flexShrink: 0,
+                          background: 'rgba(255, 149, 0, 0.08)',
+                          padding: '4px 10px',
+                          borderRadius: '12px',
+                          marginRight: '28px'
+                        }}>
+                          <span style={{
+                            color: '#ff9500',
+                            fontWeight: 700,
+                            fontSize: '15px'
+                          }}>
+                            {movie.rating}
+                          </span>
+                          <Rate
+                            readOnly
+                            allowHalf
+                            value={movie.rating / 2}
+                            style={{ '--star-size': '11px' }}
+                          />
+                        </div>
+                      </div>
+                    }
+                  >
                     <div style={{ padding: '12px 0' }}>
                       <div style={{ marginBottom: '8px' }}>
                         <strong>导演：</strong>{Array.isArray(movie.directors) ? movie.directors.join(' / ') : movie.directors}
@@ -186,33 +261,28 @@ class MovieList extends React.Component {
               <Grid.Item span={2}>
                 <div style={{
                   display: 'flex',
-                  alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '17px'
-                }}>
-                  <Rate readOnly allowHalf
-                    value={movie.rating / 2}
-                  />
-                  <Ellipsis
-                    direction='end'
-                    content={movie.rating.toString()}
-                  />
-                </div>
-              </Grid.Item>
-              <Grid.Item span={2}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  padding: '12px 0'
+                  padding: '8px 0 16px'
                 }}>
                   <Image
                     lazy
                     src={`/api/getMoviePic?moiveId=${movie.moiveId}`}
                     style={{
-                      maxWidth: '280px',
+                      maxWidth: '180px',
                       width: '100%',
-                      borderRadius: '8px',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                      aspectRatio: '2 / 3',
+                      objectFit: 'cover',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                      transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = 'scale(1.02)';
+                      e.target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'scale(1)';
+                      e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
                     }}
                   />
                 </div>
