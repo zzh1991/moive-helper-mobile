@@ -4,4 +4,10 @@ dist
 dist-ssr
 *.local
 
+test
+
 .env
+
+.claude
+.playwright
+CLAUDE.md

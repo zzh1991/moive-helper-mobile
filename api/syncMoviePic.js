@@ -28,7 +28,6 @@ const getRecentMoviePic = async(moiveId) => {
         moiveId: Number(moiveId),
       }
     });
-    console.log(movie);
     if (movie) {
       const pic = await getPic(movie.imageLarge);
       await prisma.film_list.update({
