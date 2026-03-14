@@ -1,3 +1,9 @@
+/* 基础样式 */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +11,50 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f0f0;
+  min-height: 100vh;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* 移动端默认样式 */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+/* 桌面端适配 - 模拟手机展示效果 */
+@media screen and (min-width: 768px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  #root {
+    width: 414px;
+    max-width: 414px;
+    min-height: calc(100vh - 40px);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+}
+
+/* 大屏幕适配 */
+@media screen and (min-width: 1200px) {
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  #root {
+    min-height: calc(100vh - 80px);
+  }
 }

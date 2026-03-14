@@ -6,13 +6,9 @@ import { parseDocument } from 'htmlparser2';
 import { selectAll, selectOne} from 'css-select';
 
 const getMoiveSummary = async(movieId) => {
-  const url = `https://movie.zzhpro.com/api/getMovieDetail?movieId=${movieId}`;
+  const url = `/api/getMovieDetail?movieId=${movieId}`;
   try { 
-    const data = await axios.get(url, {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
+    const data = await axios.get(url);
     const summary = data.data.summary;
     return summary;
   } catch (error) {
@@ -38,13 +34,9 @@ class MovieList extends React.Component {
   }
 
   async getMoives() {
-    const url = 'https://movie.zzhpro.com/api/recent';
+    const url = '/api/recent';
     try { 
-      const data = await axios.get(url, {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+      const data = await axios.get(url);
       const filmList = data.data.body;
       // for (const film of filmList) {
       //   let summary = film.summary;
@@ -63,21 +55,32 @@ class MovieList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ padding: '16px' }}>
         {this.state.moives.map((movie) => {
           return (
             <Grid
               columns={2}
               gap={8}
               style={{
-                alignItems: 'center'
+                alignItems: 'center',
+                marginBottom: '24px'
               }}
               key={movie.id}
             >
               <Grid.Item span={2}>
                 <Collapse accordion>
                   <Collapse.Panel key={movie.id} title={<a href={movie.url} target="_blank" rel="noreferrer">{movie.title}</a>}>
-                    {movie.summary}
+                    <div style={{ padding: '12px 0' }}>
+                      <div style={{ marginBottom: '8px' }}>
+                        <strong>导演：</strong>{Array.isArray(movie.directors) ? movie.directors.join(' / ') : movie.directors}
+                      </div>
+                      <div style={{ marginBottom: '8px' }}>
+                        <strong>演员：</strong>{Array.isArray(movie.casts) ? movie.casts.join(' / ') : movie.casts}
+                      </div>
+                      <div>
+                        <strong>国家：</strong>{Array.isArray(movie.country) ? movie.country.join(' / ') : movie.country}
+                      </div>
+                    </div>
                   </Collapse.Panel>
                 </Collapse>
               </Grid.Item>
@@ -98,10 +101,22 @@ class MovieList extends React.Component {
                 </div>
               </Grid.Item>
               <Grid.Item span={2}>
-                <Image
-                  lazy
-                  src={`https://movie.zzhpro.com/api/getMoviePic?moiveId=${movie.moiveId}`}
-                />
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  padding: '12px 0'
+                }}>
+                  <Image
+                    lazy
+                    src={`/api/getMoviePic?moiveId=${movie.moiveId}`}
+                    style={{
+                      maxWidth: '280px',
+                      width: '100%',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                    }}
+                  />
+                </div>
               </Grid.Item>
             </Grid>
           );

@@ -24,4 +24,12 @@ export default defineConfig({
       }
     }
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://movie.zzhpro.com',
+        changeOrigin: true,
+      }
+    }
+  },
 })
